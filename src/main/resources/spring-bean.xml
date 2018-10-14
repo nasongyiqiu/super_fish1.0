@@ -11,9 +11,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd"> 
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
   
    	<!-- 注解扫描  扫描指定包及其子包下的注解 -->
    <context:component-scan base-package="com">
@@ -24,9 +22,9 @@
    <!-- 数据源的配置 -->
   	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/tick_oa"/>
-		<property name="user" value="root"/>
-		<property name="password" value="199471"/>
+		<property name="jdbcUrl" value="jdbc:mysql://10.8.164.135:3306/super_fish"/>
+		<property name="user" value="gaoqiang"/>
+		<property name="password" value="gaoqiang"/>
 		<property name="initialPoolSize" value="5"/>
 		<property name="maxPoolSize" value="10"/>
 		<property name="maxIdleTime" value="1000"/>
@@ -39,14 +37,14 @@
 		<!-- 加载mybatis主配置文件 -->
 		<property name="configLocation" value="classpath:mybatis.xml"/>
 		<!-- 加载映射文件 -->
-		<property name="mapperLocations" value="classpath*:"/>
+		<property name="mapperLocations" value="classpath*:com/qfedu/mapper/*.xml"/>
 		
    </bean>
    
    <!-- 扫描映射代理的接口类,注入到spring容器中 -->
    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
    		<property name="sqlSessionFactoryBeanName" value="sessionFactory"></property>
-   		<property name="basePackage" value="com.qfedu.dao"></property>
+   		<property name="basePackage" value="com.qfedu.mapper"></property>
    </bean>
    
     <!-- 1配置事务管理类 -->
@@ -74,7 +72,7 @@
    <!-- 3AOP配置 -->
    <aop:config>
    		<!-- 切入点 -->
-   		<aop:pointcut expression="execution(* com.service.*.*(..))" id="pc"/>
+   		<aop:pointcut expression="execution(* com.qfedu.manager.*.*(..))" id="pc"/>
    
    		<!-- 通知 -->
    		<aop:advisor advice-ref="txAdvice" pointcut-ref="pc"/>
@@ -83,7 +81,7 @@
    
    <!-- shiro 配置 -->
    <!-- 自定义Realm -->
-	<bean id="myRealm" class="com.sn.realm.MyRealm"/>
+	<bean id="myRealm" class="com.qfedu.realm.MyRealm"/>
 	
 	<!-- 安全管理器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
@@ -121,23 +119,7 @@
 	    <!-- Shiro连接约束配置,即过滤链的定义 -->  
 	    <property name="filterChainDefinitions">  
 	        <value>  
-	       		/Ticktack_Office/login.html=anon
-	          	/Ticktack_Office/login=anon
-	          	/Ticktack_Office/register.html=anon
-	          	/register=anon
-	          	/register_success.html=anon
-				/Ticktack_Office/media/js/**=anon
-				/Ticktack_Office/media/css/**=anon
-				/Ticktack_Office/media/images/**=anon
-				/Ticktack_Office/media/fonts/**=anon
-				/Ticktack_Office/media/layui/**=anon
-				/Ticktack_Office/media/tem/**=anon
-				
-				
-				
-				<!-- /**=authc -->
-				<!-- 针对rememberme功能 -->
-				/**=user
+
 	        </value>  
 	    </property>
 	</bean>
